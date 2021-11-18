@@ -16,7 +16,7 @@ export default class Api extends Component{
     })
 
     const data = await res.json();
-    console.log("数据",data)
+    console.log("数据1",data)
     }catch(err){
       console.log("请求失败",err)
     }
