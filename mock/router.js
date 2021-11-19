@@ -13,5 +13,21 @@ router.get("/api/list",(req,res)=>{
     }
   ])
 })
+router.post("/api/info",(req,res)=>{
+  res.send([
+    {
+      name:"anbi",
+      age:18
+    },
+    {
+      name:"zhangsan",
+      age:30
+    },
+    {
+      name:"lisi",
+      age:30
+    }
+  ])
+})
 
 module.exports = router;

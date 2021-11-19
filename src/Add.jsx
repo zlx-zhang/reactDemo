@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 
-export default class Api extends Component{
+export default class Add extends Component{
   constructor(){
     super()
     this.state = {
@@ -16,7 +16,7 @@ export default class Api extends Component{
     })
 
     const data = await res.json();
-    console.log("数据1",data)
+    console.log("数据",data)
     }catch(err){
       console.log("请求失败",err)
     }
