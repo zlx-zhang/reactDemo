@@ -6,10 +6,22 @@ import api from "./api/index";
 import Add from "./Add";
 import Home from "./pages/Home";
 import Main from "./pages/Main";
+import UCenter from "./pages/UCenter";
 import NotFound from "./pages/NotFound";
-import { Link, Route, Redirect, Switch } from "react-router-dom";
+import Shop from "./pages/Shop";
+import MainDemo from "./pages/MainDemo";
+import Book from "./pages/Book";
+import JavaBook from "./pages/JavaBook";
+import WebBook from "./pages/WebBook";
+import Parent from "./components/coms/Parent";
+import { Link, Route, Redirect, Switch, NavLink } from "react-router-dom";
+import { connect } from "react-redux";
+import { increment,decrement } from "./actions/counter";
 
-export default class Swiper extends Component {
+//redux案例
+import House from "./pages/house";
+
+ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,6 +54,8 @@ export default class Swiper extends Component {
     api.getToken({});
   }
   render() {
+    console.log("props",this.props)
+    const {increment,decrement} = this.props;
     // let { image } = this.state;
     return (
       // <div className="container">
@@ -65,25 +79,83 @@ export default class Swiper extends Component {
       <div>
         <ul>
           <li>
-            <Link to={{pathname:"/home",state:{image:this.state.image}}}>Home</Link>
+            <NavLink
+              exact
+              to={{ pathname: "/home", state: { image: this.state.image } }}
+            >
+              Home
+            </NavLink>
           </li>
           <li>
-            <Link to="/main">Main</Link>
+            <NavLink exact to="/main">
+              Main
+            </NavLink>
+          </li>
+          <li>
+            <NavLink exact to="/ucenter">
+              UCenter
+            </NavLink>
+          </li>
+          <li>
+            <NavLink exact to="/shop">
+              Shop
+            </NavLink>
+          </li>
+          <li>
+            <NavLink exact to="/maindemo">
+              MainDemo
+            </NavLink>
           </li>
         </ul>
         <Switch>
           {/* <Route  strict exact element={<Home />}></Route> */}
+          <Route exact path="/home" component={Home}></Route>
           <Route
-            path="/home"
-            
-            component={Home}
+            exact
+            path="/main"
+            render={(props) => <Main {...props} image={this.state.image} />}
           ></Route>
-          <Route path="/main" component={Main}></Route>
+          <Route exact path="/ucenter/:name?" component={UCenter}></Route>
+          <Route exact path="/shop" component={Shop}></Route>
+          <Route exact path="/maindemo" component={MainDemo}></Route>
+          <Book>
+            <Switch>
+              <Route exact path="/javabook" component={JavaBook}></Route>
+              <Route exact path="/webbook" component={WebBook}></Route>
+            </Switch>
+          </Book>
           <Route component={NotFound}></Route>
           <Route path="/demo" render={() => <div>404页面</div>}></Route>
           {/* <Redirect to="/notfound"></Redirect> */}
         </Switch>
+        <Parent></Parent>
+        <House></House>
+        <div className="container">
+          <h1 className="jumbotron-heading text-center">{this.props.value}</h1>
+          <p className="text-center">
+            {/* <button onClick={this.props.onIncrement} className="btn btn-primary">increment</button>
+            <button onClick={this.props.onDecrement} className="btn btn-success">decrement</button> */}
+            <button onClick={()=>(increment())} className="btn btn-primary">increment</button>
+            <button onClick={()=>(decrement())} className="btn btn-success">decrement</button>
+          </p>
+        </div>
       </div>
     );
   }
 }
+
+const mapStateToProps = (state)=>{
+  return{
+    counter:state
+  }
+}
+
+const mapDispatchTopProps = (dispatch) =>{
+  return{
+    increment:()=>{dispatch(increment())}, 
+    decrement:()=>{dispatch(decrement())}
+  }
+}
+
+//先后顺序不能颠倒
+export default connect(mapStateToProps,mapDispatchTopProps)(App)
