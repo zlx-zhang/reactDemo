@@ -16,12 +16,17 @@ import WebBook from "./pages/WebBook";
 import Parent from "./components/coms/Parent";
 import { Link, Route, Redirect, Switch, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { increment,decrement } from "./actions/counter";
+import { increment, decrement } from "./actions/counter";
+import { store } from "./store/index";
+import ComA from "./pages/ComA";
+import ComB from "./pages/ComB";
+//导入Provider组件，利用这个组件包裹我们的结构。从而达到统一的维护stroe的效果
+import { Provider } from "react-redux";
 
 //redux案例
 import House from "./pages/house";
 
- class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -54,8 +59,8 @@ import House from "./pages/house";
     api.getToken({});
   }
   render() {
-    console.log("props",this.props)
-    const {increment,decrement} = this.props;
+    console.log("props", this.props);
+    const { increment, decrement } = this.props;
     // let { image } = this.state;
     return (
       // <div className="container">
@@ -135,27 +140,39 @@ import House from "./pages/house";
           <p className="text-center">
             {/* <button onClick={this.props.onIncrement} className="btn btn-primary">increment</button>
             <button onClick={this.props.onDecrement} className="btn btn-success">decrement</button> */}
-            <button onClick={()=>(increment())} className="btn btn-primary">increment</button>
-            <button onClick={()=>(decrement())} className="btn btn-success">decrement</button>
+            <button onClick={() => increment()} className="btn btn-primary">
+              increment
+            </button>
+            <button onClick={() => decrement()} className="btn btn-success">
+              decrement
+            </button>
           </p>
         </div>
+        <Provider store={store}>
+          <ComA />
+          <ComB />
+        </Provider>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state)=>{
-  return{
-    counter:state
-  }
-}
+const mapStateToProps = (state) => {
+  return {
+    counter: state,
+  };
+};
 
-const mapDispatchTopProps = (dispatch) =>{
-  return{
-    increment:()=>{dispatch(increment())}, 
-    decrement:()=>{dispatch(decrement())}
-  }
-}
+const mapDispatchTopProps = (dispatch) => {
+  return {
+    increment: () => {
+      dispatch(increment());
+    },
+    decrement: () => {
+      dispatch(decrement());
+    },
+  };
+};
 
 //先后顺序不能颠倒
-export default connect(mapStateToProps,mapDispatchTopProps)(App)
+export default connect(mapStateToProps, mapDispatchTopProps)(App);

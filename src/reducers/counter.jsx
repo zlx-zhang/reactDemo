@@ -5,7 +5,11 @@ const counter = (state = 0,action )=>{
     case "INCREMENT":
       return state + 1;
     case "DECREMENT":
-      return state - 1;
+      if(state <=0){
+        return state = 0
+      }else{
+        return state - 1;
+      }
     default:
       return state;
   }
